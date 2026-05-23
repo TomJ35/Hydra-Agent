@@ -146,6 +146,14 @@ GH_TOKEN=ghp_...                         # token avec droits repo + PR
 MAX_RETRIES=3                            # tentatives max par sous-tâche
 WORKSPACE_DIR=/tmp/hydra                 # repos clonés temporairement
 HEARTBEAT_INTERVAL=30                    # secondes
+
+# Multi-agents (optionnel)
+AGENT_IDS=agent-01,agent-02              # plusieurs connexions WS dans le meme manager
+SERVER_IDS=render-01,render-01           # optionnel, mappe par index avec AGENT_IDS
+LLM_LIST=groq,mistral                     # optionnel, mappe par index
+API_NAME_LIST=GEMINI,GEMINI              # optionnel, mappe par index
+# ou JSON prioritaire:
+AGENTS_CONFIG_JSON=[{"agent_id":"agent-01","server_id":"render-01","llm":"groq","api_name":"GEMINI"}]
 ```
 
 ---

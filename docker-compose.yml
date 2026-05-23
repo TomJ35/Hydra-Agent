@@ -5,21 +5,19 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
     environment:
       AGENT_ROLE: manager
       PYTHONUNBUFFERED: 1
-    command: ["sh", "-c", "pip install --no-cache-dir websockets && python -u src/agent_manager/manager.py"]
-    restart: unless-stopped
-
-  creation-agent:
-    image: python:3.11-slim
-    container_name: hydra-creation-agent
-    working_dir: /app
-    volumes:
-      - ./:/app
-    environment:
-      AGENT_ROLE: creation
-    command: ["sh", "-c", "echo 'creation-agent service ready (placeholder)'; sleep infinity"]
+      DOCKER_BIN: /usr/bin/docker
+      DOCKER_AGENT_USE_VOLUMES_FROM_MANAGER: 1
+      DOCKER_MANAGER_CONTAINER_REF: hydra-agent-manager
+    command:
+      [
+        "sh",
+        "-c",
+        "apt-get update && apt-get install -y --no-install-recommends docker.io docker-cli && rm -rf /var/lib/apt/lists/* && pip install --no-cache-dir websockets && python -u src/agent_manager/manager.py",
+      ]
     restart: unless-stopped
