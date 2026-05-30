@@ -564,6 +564,7 @@ class ManagedAgent:
 
         self.current_ticket_id = ticket_id
         print(f"[agent {self.spec.agent_id}] assign received: {ticket_id}")
+        await self.send_heartbeat(status="working")
 
         await self.send(
             {
@@ -571,12 +572,10 @@ class ManagedAgent:
                 "agent_id": self.spec.agent_id,
                 "ticket_id": ticket_id,
                 "level": "info",
-                "message": "Ticket assigned to manager (worker not implemented yet).",
+                "message": "Ticket assigned to agent.",
                 "ts": utc_now_iso(),
             }
         )
-
-        self.current_ticket_id = None
 
     async def handle_kill(self) -> None:
         print(f"[agent {self.spec.agent_id}] kill received, closing connection")
